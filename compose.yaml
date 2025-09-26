@@ -1,0 +1,21 @@
+services:
+  meu_bairro_database:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
+    env_file:
+      - .env
+  meu_bairro_api:
+    image: meu_bairro_api
+    entrypoint: ./entrypoint.sh
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - meu_bairro_database
+    env_file:
+      - .env
+volumes:
+  pgdata:
