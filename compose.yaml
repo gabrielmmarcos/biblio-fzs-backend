@@ -1,20 +1,20 @@
 services:
-  meu_bairro_database:
-    image: postgres
+  bibliofzs_database:
+    image: postgres:16
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-    - "5432:5432"
+      - "5432:5432"
     env_file:
       - .env
-  meu_bairro_api:
-    image: meu_bairro_api
+  bibliofzs_backend:
+    image: bibliofzs_backend
     entrypoint: ./entrypoint.sh
     build: .
     ports:
       - "8000:8000"
     depends_on:
-      - meu_bairro_database
+      - bibliofzs_database
     env_file:
       - .env
 volumes:

@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config, create_async_engine
 from sqlalchemy import pool
 
 from alembic import context
-from biblio_fzs_backend.models.produto import table_registry
+from biblio_fzs_backend.models.models import table_registry
 from biblio_fzs_backend.settings import Settings
 
 # this is the Alembic Config object, which provides

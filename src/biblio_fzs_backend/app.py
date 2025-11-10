@@ -4,7 +4,6 @@ from sys import platform
 
 from fastapi import FastAPI
 
-from biblio_fzs_backend.routers import products
 from biblio_fzs_backend.routers.users import fastapi_users, router
 from biblio_fzs_backend.schemas.root_schemas import Message
 from biblio_fzs_backend.schemas.users_schemas import UserPublic, UserSchema
@@ -15,7 +14,6 @@ if platform == "win32":
 
 
 app = FastAPI(title="Meu Bairro API")
-app.include_router(products.router)
 app.include_router(router)
 
 app.include_router(

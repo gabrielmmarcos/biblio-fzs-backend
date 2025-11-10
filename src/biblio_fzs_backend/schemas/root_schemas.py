@@ -1,10 +1,17 @@
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel
+from enum import Enum
 
 class Message(BaseModel):
     message: str
 
 
-class FilterPage(BaseModel):
-    offset: int = Field(ge=0, default=0)
-    limit: int = Field(ge=0, default=10)
+class CargoEnum(str, Enum):
+    auxiliar = 'auxiliar'
+    bibliotecario = 'bibliotecario'
+    outro = 'Outro'
+
+
+class TurnoEnum(str, Enum):
+    manha = 'manha'
+    tarde = 'tarde'
+    noite = 'noite'
