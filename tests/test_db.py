@@ -1,10 +1,9 @@
 from dataclasses import asdict
 
 import pytest
+from biblio_fzs_backend.models.produto import Produto
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from biblio_fzs_backend.models.produto import Produto
 
 
 @pytest.mark.asyncio

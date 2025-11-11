@@ -3,6 +3,7 @@ from http import HTTPStatus
 from sys import platform
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from biblio_fzs_backend.routers.users import fastapi_users, router
 from biblio_fzs_backend.schemas.root_schemas import Message
@@ -15,6 +16,15 @@ if platform == "win32":
 
 app = FastAPI(title="Meu Bairro API")
 app.include_router(router)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[''],
+    allow_credentials=True,
+    allow_methods=[''],
+    allow_headers=['*'],
+)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend, requires_verification=False),

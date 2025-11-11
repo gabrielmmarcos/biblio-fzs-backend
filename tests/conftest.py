@@ -3,6 +3,7 @@ from datetime import datetime
 
 import pytest
 import pytest_asyncio
+from biblio_fzs_backend.models.produto import Produto, table_registry
 from fastapi.testclient import TestClient
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -10,7 +11,6 @@ from testcontainers.postgres import PostgresContainer
 
 from biblio_fzs_backend.app import app
 from biblio_fzs_backend.database import get_session
-from biblio_fzs_backend.models.produto import Produto, table_registry
 
 
 @pytest.fixture

@@ -4,17 +4,24 @@ from fastapi import APIRouter, Depends
 from fastapi_users import FastAPIUsers
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from biblio_fzs_backend.models.models import Funcionario
-from biblio_fzs_backend.schemas.users_schemas import UserPublic
-from biblio_fzs_backend.security.user_settings import auth_backend
 from biblio_fzs_backend.database import get_session
+from biblio_fzs_backend.models.models import Funcionario
+from biblio_fzs_backend.schemas.users_schemas import (
+    FuncionarioPublic,
+    FuncionarioUpdate,
+    UserPublic,
+)
+from biblio_fzs_backend.security.user_settings import auth_backend
 from biblio_fzs_backend.services.user_service import (
     UserService,
+    get_user_by_id_service,
     get_user_repository,
-    get_user_by_id_service
+    update_funcionario_service,
 )
 
 fastapi_users = FastAPIUsers[Funcionario, int](get_user_repository, [auth_backend])
+
+T_CurrentUser = Annotated[Funcionario, Depends(fastapi_users.current_user())]
 
 router = APIRouter(prefix="/users", tags=["users"])
 T_UserManager = Annotated[UserService, Depends(get_user_repository)]
@@ -25,3 +32,12 @@ async def get_users_by_id(
     id: int, session: AsyncSession = Depends(get_session)
 ):
     return await get_user_by_id_service(id, session)
+
+
+@router.patch("/update/me", response_model=FuncionarioPublic)
+async def update_funcionario(
+    funcionario: FuncionarioUpdate,
+    current_user: T_CurrentUser,
+    session: AsyncSession = Depends(get_session),
+):
+    return await update_funcionario_service(funcionario, current_user, session)

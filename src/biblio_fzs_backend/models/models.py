@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from fastapi_users.db import SQLAlchemyBaseUserTable
-from biblio_fzs_backend.schemas.root_schemas import CargoEnum, TurnoEnum
-
 from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column, registry
+
+from biblio_fzs_backend.schemas.root_schemas import CargoEnum, TurnoEnum
 
 table_registry = registry()
 
@@ -28,6 +28,7 @@ class Funcionario(SQLAlchemyBaseUserTable[int]):
     is_superuser: Mapped[bool] = mapped_column(default=False, init=False)
     is_active: Mapped[bool] = mapped_column(default=True, init=False)
     crb: Mapped[str] = mapped_column(nullable=True, unique=True)
+    telefone: Mapped[str] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         nullable=False, server_default=func.now(), init=False
     )

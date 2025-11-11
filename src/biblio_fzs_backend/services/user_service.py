@@ -8,8 +8,8 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 from biblio_fzs_backend.models.models import Funcionario
+from biblio_fzs_backend.schemas.users_schemas import FuncionarioUpdate
 from biblio_fzs_backend.security.user_settings import get_user_db
 
 SECRET_KEY = "SECRET"
@@ -25,7 +25,7 @@ class UserService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
         password: str,
         user: Funcionario,
     ) -> None:
-        MIN_LENGTH_PASSWORD = 8
+        MIN_LENGTH_PASSWORD = 5
         if len(password) < MIN_LENGTH_PASSWORD:
             raise InvalidPasswordException(
                 reason="Password should be at least 8 characters"
@@ -45,9 +45,21 @@ class UserService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
         return users
 
 
-def get_user_by_id_service(id: int, session: AsyncSession):
-    return session.scalar(select(Funcionario).where(Funcionario.id == id))
-    
-
 async def get_user_repository(user_db=Depends(get_user_db)):
     yield UserService(user_db)
+
+
+async def get_user_by_id_service(id: int, session: AsyncSession):
+    return session.scalar(select(Funcionario).where(Funcionario.id == id))
+
+
+async def update_funcionario_service(funcionario: FuncionarioUpdate,
+                                     current_user: Funcionario,
+                                     session: AsyncSession):
+    for key, value in funcionario.model_dump(exclude_unset=True).items():
+        setattr(current_user, key, value)
+
+    session.add(current_user)
+    await session.commit()
+    await session.refresh(current_user)
+    return current_user
