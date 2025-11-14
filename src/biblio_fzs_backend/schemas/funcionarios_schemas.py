@@ -18,9 +18,6 @@ class FuncionarioSchemaBase(BaseModel):
 class FuncionarioSchema(schemas.BaseUserCreate, FuncionarioSchemaBase): ...
 
 
-class FuncionarioPublic(schemas.BaseUser[int], FuncionarioSchemaBase): ...
-
-
 class FuncionarioPublic(schemas.BaseUser[int], FuncionarioSchemaBase):
     cep: int | None
     numero_residencia: str | None

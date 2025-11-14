@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from biblio_fzs_backend.database import get_session
 from biblio_fzs_backend.models.models import Funcionario
-from biblio_fzs_backend.schemas.users_schemas import (
+from biblio_fzs_backend.schemas.funcionarios_schemas import (
     FuncionarioPublic,
     FuncionarioUpdate,
     FuncionarioPublic,

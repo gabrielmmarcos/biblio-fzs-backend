@@ -8,14 +8,14 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from biblio_fzs_backend.models.models import Funcionario
-from biblio_fzs_backend.schemas.funcionarios_schemas import FuncionarioUpdate
-from biblio_fzs_backend.security.user_settings import get_funcionario_db
+from biblio_fzs_backend.models.models import Aluno
+from biblio_fzs_backend.schemas.alunos_schemas import AlunoUpdate
+from biblio_fzs_backend.security.user_settings import get_aluno_db
 
 SECRET_KEY = "SECRET"
 
 
-class FuncionarioService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
+class AlunoService(IntegerIDMixin, BaseUserManager[Aluno, int]):
     verification_token_secret = SECRET_KEY
     reset_password_token_secret = SECRET_KEY
 
@@ -23,7 +23,7 @@ class FuncionarioService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
     async def validate_password(
         self,
         password: str,
-        user: Funcionario,
+        user: Aluno,
     ) -> None:
         MIN_LENGTH_PASSWORD = 5
         if len(password) < MIN_LENGTH_PASSWORD:
@@ -45,21 +45,21 @@ class FuncionarioService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
         return users
 
 
-async def get_funcionario_repository(user_db=Depends(get_funcionario_db)):
-    yield FuncionarioService(user_db)
+async def get_aluno_repository(aluno_db=Depends(get_aluno_db)):
+    yield AlunoService(aluno_db)
 
 
-async def get_funcionario_by_id_service(id: int, session: AsyncSession):
-    return session.scalar(select(Funcionario).where(Funcionario.id == id))
+async def get_aluno_by_id_service(id: int, session: AsyncSession):
+    return session.scalar(select(Aluno).where(Aluno.id == id))
 
 
-async def update_funcionario_service(funcionario: FuncionarioUpdate,
-                                     current_user: Funcionario,
+async def update_aluno_service(funcionario: AlunoUpdate,
+                                     current_aluno: Aluno,
                                      session: AsyncSession):
     for key, value in funcionario.model_dump(exclude_unset=True).items():
-        setattr(current_user, key, value)
+        setattr(current_aluno, key, value)
 
-    session.add(current_user)
+    session.add(current_aluno)
     await session.commit()
-    await session.refresh(current_user)
-    return current_user
+    await session.refresh(current_aluno)
+    return current_aluno

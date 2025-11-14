@@ -35,3 +35,27 @@ class Funcionario(SQLAlchemyBaseUserTable[int]):
     updated_at: Mapped[datetime] = mapped_column(
         nullable=False, onupdate=func.now(), server_default=func.now(), init=False
     )
+
+
+@table_registry.mapped_as_dataclass
+class Aluno(SQLAlchemyBaseUserTable[int]):
+    __tablename__ = "alunos"
+
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(nullable=False)
+    nome: Mapped[str] = mapped_column(nullable=False)
+    sobrenome: Mapped[str] = mapped_column(nullable=False)
+    cpf: Mapped[str] = mapped_column(nullable=False)
+    cep: Mapped[int] = mapped_column(nullable=True, init=True)
+    numero_residencia: Mapped[str] = mapped_column(nullable=True, init=True)
+    complemento: Mapped[str] = mapped_column(nullable=True, init=True)
+    is_verified: Mapped[bool] = mapped_column(default=False, init=False)
+    is_superuser: Mapped[bool] = mapped_column(default=False, init=False)
+    is_active: Mapped[bool] = mapped_column(default=True, init=False)
+    created_at: Mapped[datetime] = mapped_column(
+        nullable=False, server_default=func.now(), init=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        nullable=False, onupdate=func.now(), server_default=func.now(), init=False
+    )
