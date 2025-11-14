@@ -10,12 +10,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from biblio_fzs_backend.models.models import Funcionario
 from biblio_fzs_backend.schemas.users_schemas import FuncionarioUpdate
-from biblio_fzs_backend.security.user_settings import get_user_db
+from biblio_fzs_backend.security.user_settings import get_funcionario_db
 
 SECRET_KEY = "SECRET"
 
 
-class UserService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
+class FuncionarioService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
     verification_token_secret = SECRET_KEY
     reset_password_token_secret = SECRET_KEY
 
@@ -45,11 +45,11 @@ class UserService(IntegerIDMixin, BaseUserManager[Funcionario, int]):
         return users
 
 
-async def get_user_repository(user_db=Depends(get_user_db)):
-    yield UserService(user_db)
+async def get_funcionario_repository(user_db=Depends(get_funcionario_db)):
+    yield FuncionarioService(user_db)
 
 
-async def get_user_by_id_service(id: int, session: AsyncSession):
+async def get_funcionario_by_id_service(id: int, session: AsyncSession):
     return session.scalar(select(Funcionario).where(Funcionario.id == id))
 
 

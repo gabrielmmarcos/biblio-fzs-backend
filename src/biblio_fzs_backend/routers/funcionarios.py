@@ -9,29 +9,29 @@ from biblio_fzs_backend.models.models import Funcionario
 from biblio_fzs_backend.schemas.users_schemas import (
     FuncionarioPublic,
     FuncionarioUpdate,
-    UserPublic,
+    FuncionarioPublic,
 )
-from biblio_fzs_backend.security.user_settings import auth_backend
-from biblio_fzs_backend.services.user_service import (
-    UserService,
-    get_user_by_id_service,
-    get_user_repository,
+from biblio_fzs_backend.security.user_settings import auth_funcionario_backend
+from biblio_fzs_backend.services.funcionario_service import (
+    FuncionarioService,
+    get_funcionario_by_id_service,
+    get_funcionario_repository,
     update_funcionario_service,
 )
 
-fastapi_users = FastAPIUsers[Funcionario, int](get_user_repository, [auth_backend])
+fastapi_users = FastAPIUsers[Funcionario, int](get_funcionario_repository, [auth_funcionario_backend])
 
 T_CurrentUser = Annotated[Funcionario, Depends(fastapi_users.current_user())]
 
-router = APIRouter(prefix="/users", tags=["users"])
-T_UserManager = Annotated[UserService, Depends(get_user_repository)]
+router = APIRouter(prefix="/funcionarios", tags=["funcionarios"])
+T_UserManager = Annotated[FuncionarioService, Depends(get_funcionario_repository)]
 
 
-@router.get("/get_by_id/{id}", response_model=UserPublic)
+@router.get("/get_by_id/{id}", response_model=FuncionarioPublic)
 async def get_users_by_id(
     id: int, session: AsyncSession = Depends(get_session)
 ):
-    return await get_user_by_id_service(id, session)
+    return await get_funcionario_by_id_service(id, session)
 
 
 @router.patch("/update/me", response_model=FuncionarioPublic)

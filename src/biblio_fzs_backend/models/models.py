@@ -21,7 +21,7 @@ class Funcionario(SQLAlchemyBaseUserTable[int]):
     cpf: Mapped[str] = mapped_column(nullable=False)
     cargo: Mapped[CargoEnum] = mapped_column(nullable=False)
     turno: Mapped[TurnoEnum] = mapped_column(nullable=False)
-    cep: Mapped[int] = mapped_column(nullable=True, init=False)
+    cep: Mapped[int] = mapped_column(nullable=True, init=True)
     numero_residencia: Mapped[str] = mapped_column(nullable=True, init=False)
     complemento: Mapped[str] = mapped_column(nullable=True, init=False)
     is_verified: Mapped[bool] = mapped_column(default=False, init=False)

@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr
 from biblio_fzs_backend.schemas.root_schemas import CargoEnum, TurnoEnum
 
 
-class UserSchemaBase(BaseModel):
+class FuncionarioSchemaBase(BaseModel):
     nome: str
     sobrenome: str
     cpf: str
@@ -12,15 +12,16 @@ class UserSchemaBase(BaseModel):
     cargo: CargoEnum
     turno: TurnoEnum
     crb: str
+    cep: int
 
 
-class UserSchema(schemas.BaseUserCreate, UserSchemaBase): ...
+class FuncionarioSchema(schemas.BaseUserCreate, FuncionarioSchemaBase): ...
 
 
-class UserPublic(schemas.BaseUser[int], UserSchemaBase): ...
+class FuncionarioPublic(schemas.BaseUser[int], FuncionarioSchemaBase): ...
 
 
-class FuncionarioPublic(schemas.BaseUser[int], UserSchemaBase):
+class FuncionarioPublic(schemas.BaseUser[int], FuncionarioSchemaBase):
     cep: int | None
     numero_residencia: str | None
     email: EmailStr

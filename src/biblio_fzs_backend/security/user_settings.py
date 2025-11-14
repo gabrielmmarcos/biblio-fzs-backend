@@ -12,7 +12,7 @@ from biblio_fzs_backend.models.models import Funcionario
 
 SECRET_KEY = "SECRET"
 
-bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+bearer_funcionario_transport = BearerTransport(tokenUrl="/funcionarios/auth/jwt/login")
 
 
 def get_jwt_strategy():
@@ -21,10 +21,10 @@ def get_jwt_strategy():
     )
 
 
-async def get_user_db(session: AsyncSession = Depends(get_session)):
+async def get_funcionario_db(session: AsyncSession = Depends(get_session)):
     yield SQLAlchemyUserDatabase(session, Funcionario)
 
 
-auth_backend = AuthenticationBackend(
-    name="jwt", transport=bearer_transport, get_strategy=get_jwt_strategy
+auth_funcionario_backend = AuthenticationBackend(
+    name="jwt", transport=bearer_funcionario_transport, get_strategy=get_jwt_strategy
 )

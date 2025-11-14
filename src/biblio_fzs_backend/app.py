@@ -5,10 +5,10 @@ from sys import platform
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from biblio_fzs_backend.routers.users import fastapi_users, router
+from biblio_fzs_backend.routers.funcionarios import fastapi_users, router
 from biblio_fzs_backend.schemas.root_schemas import Message
-from biblio_fzs_backend.schemas.users_schemas import UserPublic, UserSchema
-from biblio_fzs_backend.security.user_settings import auth_backend
+from biblio_fzs_backend.schemas.users_schemas import FuncionarioPublic, FuncionarioSchema
+from biblio_fzs_backend.security.user_settings import auth_funcionario_backend
 
 if platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -27,21 +27,21 @@ app.add_middleware(
 )
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend, requires_verification=False),
-    prefix="/auth/jwt",
+    fastapi_users.get_auth_router(auth_funcionario_backend, requires_verification=False),
+    prefix="/funcionarios/auth/jwt",
     tags=["auth"],
 )
 app.include_router(
-    fastapi_users.get_register_router(UserPublic, UserSchema),
-    prefix="/users",
-    tags=["users"],
+    fastapi_users.get_register_router(FuncionarioPublic, FuncionarioSchema),
+    prefix="/funcionarios",
+    tags=["funcionarios"],
 )
 app.include_router(
     fastapi_users.get_users_router(
-        UserPublic, UserSchema, requires_verification=False
+        FuncionarioPublic, FuncionarioSchema, requires_verification=False
     ),
-    prefix="/users",
-    tags=["users"],
+    prefix="/funcionarios",
+    tags=["funcionarios"],
 )
 
 
