@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from biblio_fzs_backend.routers.funcionarios import fastapi_users as fastapi_funcionario_users, router as funcionarios_router
 from biblio_fzs_backend.routers.alunos import fastapi_users as fastapi_aluno_users, router as alunos_router
+from biblio_fzs_backend.routers.cursos import router as cursos_router
+from biblio_fzs_backend.routers.presenca import router as presenca_router
 from biblio_fzs_backend.schemas.root_schemas import Message
 from biblio_fzs_backend.schemas.funcionarios_schemas import FuncionarioPublic, FuncionarioSchema
 from biblio_fzs_backend.schemas.alunos_schemas import AlunoPublic, AlunoSchema
@@ -19,11 +21,12 @@ if platform == "win32":
 app = FastAPI(title="Meu Bairro API")
 app.include_router(funcionarios_router)
 app.include_router(alunos_router)
-
+app.include_router(cursos_router)
+app.include_router(presenca_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[''],
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=[''],
     allow_headers=['*'],

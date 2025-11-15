@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from fastapi_users.db import SQLAlchemyBaseUserTable
-from sqlalchemy import func
+from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, registry
 
 from biblio_fzs_backend.schemas.root_schemas import CargoEnum, TurnoEnum
@@ -58,4 +58,41 @@ class Aluno(SQLAlchemyBaseUserTable[int]):
     )
     updated_at: Mapped[datetime] = mapped_column(
         nullable=False, onupdate=func.now(), server_default=func.now(), init=False
+    )
+
+
+@table_registry.mapped_as_dataclass
+class Curso:
+    __tablename__ = "cursos"
+
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    nome: Mapped[str] = mapped_column(nullable=False)
+    periodo: Mapped[TurnoEnum] = mapped_column(nullable=False)
+    inicio: Mapped[date] = mapped_column(nullable=False)
+    fim: Mapped[date] = mapped_column(nullable=False)
+    instituicao: Mapped[str] = mapped_column(nullable=False)
+
+
+@table_registry.mapped_as_dataclass
+class AlunoCurso:
+    __tablename__ = "alunos_cursos"
+
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    id_aluno: Mapped[int] = mapped_column(
+        ForeignKey('alunos.id', ondelete='CASCADE'), nullable=False
+    )
+    id_curso: Mapped[int] = mapped_column(
+        ForeignKey('cursos.id', ondelete='CASCADE'), nullable=False
+    )
+    ra: Mapped[str] = mapped_column(nullable=False, unique=True)
+
+
+@table_registry.mapped_as_dataclass
+class Presenca:
+    __tablename__ = "presencas"
+
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    datetime_presenca: Mapped[datetime]
+    id_aluno: Mapped[int] = mapped_column(
+        ForeignKey('alunos.id', ondelete='CASCADE'), nullable=False
     )

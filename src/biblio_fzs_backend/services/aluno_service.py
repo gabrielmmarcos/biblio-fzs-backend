@@ -50,7 +50,7 @@ async def get_aluno_repository(aluno_db=Depends(get_aluno_db)):
 
 
 async def get_aluno_by_id_service(id: int, session: AsyncSession):
-    return session.scalar(select(Aluno).where(Aluno.id == id))
+    return await session.scalar(select(Aluno).where(Aluno.id == id))
 
 
 async def update_aluno_service(funcionario: AlunoUpdate,

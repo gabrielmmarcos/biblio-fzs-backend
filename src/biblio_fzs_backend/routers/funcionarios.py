@@ -21,7 +21,7 @@ from biblio_fzs_backend.services.funcionario_service import (
 
 fastapi_users = FastAPIUsers[Funcionario, int](get_funcionario_repository, [auth_funcionario_backend])
 
-T_CurrentUser = Annotated[Funcionario, Depends(fastapi_users.current_user())]
+T_CurrentFuncionario = Annotated[Funcionario, Depends(fastapi_users.current_user())]
 
 router = APIRouter(prefix="/funcionarios", tags=["funcionarios"])
 T_UserManager = Annotated[FuncionarioService, Depends(get_funcionario_repository)]
@@ -37,7 +37,7 @@ async def get_users_by_id(
 @router.patch("/update/me", response_model=FuncionarioPublic)
 async def update_funcionario(
     funcionario: FuncionarioUpdate,
-    current_user: T_CurrentUser,
+    current_user: T_CurrentFuncionario,
     session: AsyncSession = Depends(get_session),
 ):
     return await update_funcionario_service(funcionario, current_user, session)

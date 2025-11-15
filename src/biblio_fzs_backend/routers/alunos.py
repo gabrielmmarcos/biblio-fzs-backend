@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi_users import FastAPIUsers
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from biblio_fzs_backend.database import get_session
 from biblio_fzs_backend.models.models import Aluno
@@ -26,11 +27,19 @@ router = APIRouter(prefix="/alunos", tags=["alunos"])
 T_UserManager = Annotated[AlunoService, Depends(get_aluno_repository)]
 
 
-@router.get("/get_by_id/{id}", response_model=AlunoPublic)
+@router.get("/get_by_id/{id}/", response_model=AlunoPublic | None)
 async def get_aluno_by_id(
-    id: int, session: AsyncSession = Depends(get_session)
+    id: int,
+    session: AsyncSession = Depends(get_session)
 ):
     return await get_aluno_by_id_service(id, session)
+
+
+@router.get("/get_all", response_model=list[AlunoPublic])
+async def get_aluno_by_id(
+    session: AsyncSession = Depends(get_session)
+):
+    return await session.scalars(select(Aluno))
 
 
 @router.patch("/update/me", response_model=AlunoPublic)
