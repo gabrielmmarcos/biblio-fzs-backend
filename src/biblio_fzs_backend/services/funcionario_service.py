@@ -50,7 +50,7 @@ async def get_funcionario_repository(user_db=Depends(get_funcionario_db)):
 
 
 async def get_funcionario_by_id_service(id: int, session: AsyncSession):
-    return session.scalar(select(Funcionario).where(Funcionario.id == id))
+    return await session.scalar(select(Funcionario).where(Funcionario.id == id))
 
 
 async def update_funcionario_service(funcionario: FuncionarioUpdate,
