@@ -18,7 +18,7 @@ if platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
-app = FastAPI(title="Meu Bairro API")
+app = FastAPI(title="BiblioFZS", description="Backend Tcc", version="1.0")
 app.include_router(funcionarios_router)
 app.include_router(alunos_router)
 app.include_router(cursos_router)
@@ -28,7 +28,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
     allow_credentials=True,
-    allow_methods=[''],
+    allow_methods=['*'],
     allow_headers=['*'],
 )
 
@@ -73,4 +73,4 @@ app.include_router(
 
 @app.get("/", status_code=HTTPStatus.OK, response_model=Message)
 def read_root():
-    return {"message": "Meu Bairro. Conecte-se com a sua comunidade"}
+    return {"message": "BiblioFZS - Seu gerenciador de biblioteca"}

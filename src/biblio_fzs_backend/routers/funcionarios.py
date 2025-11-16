@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi_users import FastAPIUsers
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from biblio_fzs_backend.database import get_session
 from biblio_fzs_backend.models.models import Funcionario
@@ -41,3 +42,9 @@ async def update_funcionario(
     session: AsyncSession = Depends(get_session),
 ):
     return await update_funcionario_service(funcionario, current_user, session)
+
+@router.get("/get_all", response_model=list[FuncionarioPublic])
+async def get_users_by_id(
+    session: AsyncSession = Depends(get_session)
+):
+    return await session.scalars(select(Funcionario))

@@ -14,6 +14,6 @@ class CargoEnum(str, Enum):
 
 
 class TurnoEnum(str, Enum):
-    manha = 'manha'
+    manha = 'manhã'
     tarde = 'tarde'
     noite = 'noite'
