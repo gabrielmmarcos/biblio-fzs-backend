@@ -1,0 +1,21 @@
+services:
+  bibliofzs_database:
+    image: postgres:16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+  bibliofzs_backend:
+    image: bibliofzs_backend
+    entrypoint: ./entrypoint.sh
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - bibliofzs_database
+    env_file:
+      - .env
+volumes:
+  pgdata:
